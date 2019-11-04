@@ -7,6 +7,7 @@ let spaceDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-
 let numClosedDoors = 3
 let closeDoorPath = 'https://s3.amazonaws.com/codecademy-content/projects/chore-door/images/closed_door.svg'
 let startButton = document.getElementById('start')
+let currentlyPlaying = true
 let openDoor1,
     openDoor2,
     openDoor3;
@@ -29,6 +30,13 @@ randomChoreDoorGenerator = () => {
         openDoor3 = beachDoorPath
     }
 }
+isBot = (door) => {
+    if (door.src == botDoorPath) {
+        return true
+    } else {
+        return false
+    }
+}
 isClick = (door) => {
     if (door.src == closeDoorPath) {
         return false
@@ -40,33 +48,56 @@ playDoor = () => {
     numClosedDoors--
     if (numClosedDoors === 0) {
         gameOver('win')
+    } else if (isBot(door)) {
+        gameOver()
     }
 }
 doorImage1.onclick = () => {
     doorImage1.src = openDoor1
-    playDoor()
-    if (!isClick(doorImage1)) {
+    playDoor(doorImage1)
+    if (currentlyPlaying && !isClicked(door)) {  
 
+    } else if (isBot(door)) {
+        gameOver()
     }
 
 }
 doorImage2.onclick = () => {
     doorImage2.src = openDoor2
-    playDoor()
-    if (!isClick(doorImage1)) {
+    playDoor(doorImage2)
+    if (currentlyPlaying && !isClicked(door)) {    
 
+    } else if (isBot(door)) {
+        gameOver()
     }
 }
 doorImage3.onclick = () => {
     doorImage3.src = openDoor3
-    playDoor()
-    if (!isClick(doorImage1)) {
-
+    playDoor(doorImage3)
+    if (currentlyPlaying && !isClicked(door)) {
+        
+    } else if (isBot(door)) {
+        gameOver()
     }
+}
+startButton.click = () =>{
+    startRound()
+}
+startRound = () =>{
+    doorImage1.src = closeDoorPath
+    numClosedDoors = 3
+    startButton.innerHTML = 'Good luck!'
+    currentlyPlaying = true
+    randomChoreDoorGenerator()
 }
 let gameOver = (status) => {
     if (status == 'win') {
         startButton.innerHTML = 'You win! Play again?'
     }
-}
-randomChoreDoorGenerator()
+    else{
+        startButton.innerHTML = 'Game over! Play again?'
+    }
+   
+} 
+currentlyPlaying = false
+startRound()
