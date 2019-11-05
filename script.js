@@ -15,7 +15,6 @@ randomChoreDoorGenerator = () => {
     let choreDoor = Math.random()
     choreDoor = choreDoor * numClosedDoors
     choreDoor = Math.floor(choreDoor)
-    console.log(choreDoor)
     if (choreDoor == 0) {
         openDoor1 = botDoorPath
         openDoor2 = beachDoorPath
@@ -44,47 +43,43 @@ isClick = (door) => {
         return true
     }
 }
-playDoor = () => {
+playDoor = (door) => {
     numClosedDoors--
-    if (numClosedDoors === 0) {
+    if (numClosedDoors === 0 && isBot(door) == true) {
         gameOver('win')
     } else if (isBot(door)) {
-        gameOver()
+        gameOver()    
     }
 }
 doorImage1.onclick = () => {
     doorImage1.src = openDoor1
     playDoor(doorImage1)
-    if (currentlyPlaying && !isClicked(door)) {  
-
-    } else if (isBot(door)) {
-        gameOver()
-    }
-
+    if (currentlyPlaying && !isClick(doorImage1)) {  
+        doorImage1.src = closeDoorPath
+    } 
 }
 doorImage2.onclick = () => {
     doorImage2.src = openDoor2
     playDoor(doorImage2)
-    if (currentlyPlaying && !isClicked(door)) {    
-
-    } else if (isBot(door)) {
-        gameOver()
-    }
+    if (currentlyPlaying && !isClick(doorImage2)) {    
+        doorImage2.src = closeDoorPath
+    } 
 }
 doorImage3.onclick = () => {
     doorImage3.src = openDoor3
     playDoor(doorImage3)
-    if (currentlyPlaying && !isClicked(door)) {
+    if (currentlyPlaying && !isClick(doorImage3)) {
+        doorImage3.src = closeDoorPath
         
-    } else if (isBot(door)) {
-        gameOver()
-    }
+    } 
 }
-startButton.click = () =>{
+startButton.onclick = () =>{
     startRound()
 }
 startRound = () =>{
     doorImage1.src = closeDoorPath
+    doorImage2.src = closeDoorPath
+    doorImage3.src = closeDoorPath
     numClosedDoors = 3
     startButton.innerHTML = 'Good luck!'
     currentlyPlaying = true
@@ -96,8 +91,9 @@ let gameOver = (status) => {
     }
     else{
         startButton.innerHTML = 'Game over! Play again?'
+      
     }
    
-} 
+}
 currentlyPlaying = false
 startRound()
